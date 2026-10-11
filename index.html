@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aarya Aamish Bhatt | Quantitative Researcher</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        quant: {
+                            dark: '#0a0f18',
+                            card: '#111827',
+                            accent: '#06b6d4', // Cyan
+                            neon: '#10b981'  // Emerald/Neon Green
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0a0f18;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Hero Canvas Background */
+        #network-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Typing Effect Cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-start infinite;
+            color: #06b6d4;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glowing Effects & 3D Tilt Setup */
+        .glow-border {
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+            will-change: transform;
+        }
+        .tilt-content {
+            transform: translateZ(30px); /* Pops content out during tilt */
+        }
+        
+        .tilt-card:hover {
+            border-color: rgba(6, 182, 212, 0.8);
+            box-shadow: 0 15px 35px rgba(6, 182, 212, 0.15), 0 5px 15px rgba(16, 185, 129, 0.1);
+            z-index: 10;
+        }
+        
+        .skill-tag {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .skill-tag:hover {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+            border-color: #10b981;
+            color: #10b981;
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        /* Timeline Styles */
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #06b6d4, #10b981, transparent);
+        }
+        .timeline-dot {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+        }
+
+        /* Interactive Hobbies CSS Animations */
+        @keyframes vroom {
+            0% { transform: translateX(0) skewX(0); }
+            20% { transform: translateX(-10px) skewX(10deg); }
+            100% { transform: translateX(200px) skewX(-20deg); opacity: 0;}
+        }
+        .hobby-card:hover .f1-car {
+            animation: vroom 0.8s ease-in forwards;
+        }
+
+        @keyframes smash {
+            0% { transform: rotate(0) scale(1); }
+            25% { transform: rotate(-20deg) scale(1.2); }
+            50% { transform: rotate(40deg) scale(1.3); }
+            100% { transform: rotate(0) scale(1); }
+        }
+        .hobby-card:hover .paddle {
+            animation: smash 0.5s ease-in-out;
+            color: #10b981;
+        }
+
+        @keyframes fanOut {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(-15px) rotate(15deg) scale(1.2); }
+        }
+        .hobby-card:hover .card-spade { animation: fanOut 0.3s forwards; }
+        .hobby-card:hover .card-heart { animation: fanOut 0.3s forwards; transform-origin: bottom left; transform: translateY(-15px) rotate(-15deg) scale(1.2); }
+
+        @keyframes knightJump {
+            0% { transform: translate(0, 0); }
+            40% { transform: translate(10px, -20px) scale(1.2); }
+            100% { transform: translate(20px, -5px) scale(1.1); }
+        }
+        .hobby-card:hover .chess-piece {
+            animation: knightJump 0.5s forwards;
+            color: #06b6d4;
+        }
+
+        /* Hide default scrollbar, create custom */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0f18; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+    </style>
+</head>
+<body class="antialiased selection:bg-quant-accent selection:text-white relative">
+
+    <nav class="fixed w-full z-50 top-0 backdrop-blur-md bg-quant-dark/80 border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-mono font-bold text-white tracking-tighter interactive-element">
+                <span class="text-quant-accent">Aarya</span>.Bhatt()
+            </a>
+            <div class="hidden md:flex items-center space-x-6 font-mono text-sm">
+                <a href="#about" class="hover:text-quant-accent transition-colors interactive-element">~/about</a>
+                <a href="#experience" class="hover:text-quant-accent transition-colors interactive-element">~/experience</a>
+                <a href="#projects" class="hover:text-quant-accent transition-colors interactive-element">~/projects</a>
+                <a href="#skills" class="hover:text-quant-accent transition-colors interactive-element">~/skills</a>
+                
+                <!-- Prominent GitHub Link in Nav -->
+                <a href="https://github.com/Aarya-19" target="_blank" class="flex items-center gap-2 text-white hover:text-quant-neon transition-colors interactive-element border border-white/20 rounded-full px-3 py-1 bg-white/5 hover:bg-quant-neon/10">
+                    <i class="fab fa-github text-lg"></i>
+                    <span>GitHub</span>
+                </a>
+            </div>
+            
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden" id="about">
+        <!-- Interactive Particle Canvas -->
+        <canvas id="network-canvas"></canvas>
+        
+        <!-- Glowing atmospheric orbs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-quant-accent/15 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-quant-neon/15 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 relative z-10 w-full">
+            <!-- Text Content -->
+            <div class="flex-1 text-center md:text-left space-y-6">
+                <p class="text-quant-accent font-mono text-lg reveal">> Hello, World. I am</p>
+                <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight reveal" style="transition-delay: 100ms;">
+                    Aarya Aamish Bhatt
+                </h1>
+                <div class="h-16 md:h-10 text-xl md:text-2xl font-mono text-gray-400 reveal" style="transition-delay: 200ms;">
+                    > <span id="typed-text" class="typing-cursor text-quant-neon"></span>
+                </div>
+                <div class="text-gray-400 max-w-xl mx-auto md:mx-0 leading-relaxed reveal space-y-4" style="transition-delay: 300ms;">
+                    <p>
+                        Passionate about merging quantitative analysis, machine learning, and software engineering. I am deeply interested in working in roles where I can actively create and deploy financial strategies, particularly in <strong>Quantitative Research (QR)</strong> and <strong>Quantitative Trading (QT)</strong>.
+                    </p>
+                    <p class="font-mono text-sm text-gray-500 border-l-2 border-quant-accent pl-4">
+                        <i class="fas fa-graduation-cap mr-2"></i> Upcoming MFE @ <strong>UC Berkeley, Haas</strong> <br>
+                        <i class="fas fa-university mr-2 mt-2"></i> Dual Degree: M.Sc. Economics & B.E. Computer Science @ <strong>BITS Pilani</strong>
+                    </p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-4 reveal" style="transition-delay: 400ms;">
+                    <a href="#" class="px-6 py-3 bg-quant-accent text-quant-dark font-semibold rounded hover:bg-cyan-300 transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)] interactive-element">
+                        <i class="fas fa-file-pdf mr-2"></i> Download Resume
+                    </a>
+                </div>
+                <div class="flex items-center justify-center md:justify-start gap-6 pt-6 text-2xl text-gray-400 reveal" style="transition-delay: 500ms;">
+                    <a href="https://github.com/Aarya-19" target="_blank" class="hover:text-quant-neon transition-colors interactive-element" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/aaryaaamishbhatt" target="_blank" class="hover:text-quant-accent transition-colors interactive-element" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:example@example.com" class="hover:text-quant-accent transition-colors interactive-element" title="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            
+            <!-- Profile Photo -->
+            <div class="flex-shrink-0 reveal" style="transition-delay: 200ms;">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-1 bg-gradient-to-tr from-quant-accent to-quant-neon tilt-card interactive-element">
+                    <img src="https://placehold.co/400x400/1e293b/06b6d4?text=AAB" alt="Aarya Aamish Bhatt" class="tilt-content w-full h-full rounded-full object-cover border-4 border-quant-dark">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 px-4 bg-black/40">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center font-mono reveal">
+                <span class="text-quant-accent">01.</span> Experience
+            </h2>
+            
+            <div class="relative pl-8 md:pl-0">
+                <!-- Timeline central line (desktop) / left line (mobile) -->
+                <div class="timeline-line absolute left-8 md:left-1/2 top-0 bottom-0 -ml-px"></div>
+
+                <!-- Job 1 -->
+                <div class="relative flex md:justify-between items-center w-full mb-16 reveal group">
+                    <div class="hidden md:block w-5/12 text-right pr-12">
+                        <span class="font-mono text-quant-neon font-bold text-lg">QIS Strats Associate</span>
+                    </div>
+                    <div class="timeline-dot absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-quant-accent -translate-x-[7px] z-10 transition-transform group-hover:scale-150 group-hover:bg-quant-neon"></div>
+                    <div class="w-full md:w-5/12 pl-8 md:pl-12">
+                        <div class="glow-border bg-quant-card p-6 rounded-xl tilt-card interactive-element">
+                            <div class="tilt-content">
+                                <h3 class="text-xl font-bold text-white md:hidden">QIS Strats Associate</h3>
+                                <h4 class="text-2xl text-quant-accent mb-2 font-bold"><i class="fas fa-chart-bar mr-2 text-sm"></i>Morgan Stanley</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Quantitative Investment Strategies. Developed and optimized algorithmic trading models, analyzed massive financial datasets, and collaborated seamlessly with portfolio managers to deploy scalable strategies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job 2 -->
+                <div class="relative flex md:justify-between items-center w-full mb-16 reveal group">
+                    <div class="w-full md:w-5/12 pl-8 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glow-border bg-quant-card p-6 rounded-xl tilt-card interactive-element">
+                            <div class="tilt-content">
+                                <h3 class="text-xl font-bold text-white md:hidden">Digital Banking Solutions Intern</h3>
+                                <h4 class="text-2xl text-red-400 mb-2 font-bold"><i class="fas fa-server mr-2 text-sm"></i>Oracle</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Contributed to core digital banking infrastructure. Engineered optimized database queries and integrated secure financial APIs for high-performance enterprise banking solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-dot absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-quant-accent -translate-x-[7px] z-10 transition-transform group-hover:scale-150 order-1 md:order-2 group-hover:bg-red-400"></div>
+                    <div class="hidden md:block w-5/12 pl-12 order-3">
+                        <span class="font-mono text-gray-300 font-bold text-lg">Digital Banking Intern</span>
+                    </div>
+                </div>
+
+                <!-- Job 3 -->
+                <div class="relative flex md:justify-between items-center w-full mb-16 reveal group">
+                    <div class="hidden md:block w-5/12 text-right pr-12">
+                        <span class="font-mono text-gray-300 font-bold text-lg">Data Analyst</span>
+                    </div>
+                    <div class="timeline-dot absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-quant-accent -translate-x-[7px] z-10 transition-transform group-hover:scale-150 group-hover:bg-purple-400"></div>
+                    <div class="w-full md:w-5/12 pl-8 md:pl-12">
+                        <div class="glow-border bg-quant-card p-6 rounded-xl tilt-card interactive-element">
+                            <div class="tilt-content">
+                                <h3 class="text-xl font-bold text-white md:hidden">Data Analyst</h3>
+                                <h4 class="text-2xl text-purple-400 mb-2 font-bold"><i class="fas fa-database mr-2 text-sm"></i>Questt</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Processed and visualized complex user engagement data pipelines. Extracted actionable insights to drive data-driven product development and growth strategies.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job 4 -->
+                <div class="relative flex md:justify-between items-center w-full reveal group">
+                    <div class="w-full md:w-5/12 pl-8 md:pl-0 md:pr-12 md:text-right order-2 md:order-1">
+                        <div class="glow-border bg-quant-card p-6 rounded-xl tilt-card interactive-element">
+                            <div class="tilt-content">
+                                <h3 class="text-xl font-bold text-white md:hidden">Teaching Assistant</h3>
+                                <h4 class="text-2xl text-blue-400 mb-2 font-bold"><i class="fas fa-chalkboard-teacher mr-2 text-sm"></i>BITS Pilani</h4>
+                                <p class="text-sm text-gray-400 leading-relaxed">Mentored students and rigorously evaluated assignments for 6 consecutive semesters across core Computer Science and Advanced Economics courses.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-dot absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-quant-accent -translate-x-[7px] z-10 transition-transform group-hover:scale-150 order-1 md:order-2 group-hover:bg-blue-400"></div>
+                    <div class="hidden md:block w-5/12 pl-12 order-3">
+                        <span class="font-mono text-gray-300 font-bold text-lg">Teaching Assistant</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center font-mono reveal">
+                <span class="text-quant-accent">02.</span> Selected Works
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Project 1 -->
+                <a href="https://github.com/Aarya-19" target="_blank" class="glow-border bg-quant-card p-8 rounded-xl reveal group relative overflow-hidden flex flex-col h-full tilt-card interactive-element block">
+                    <div class="absolute top-0 right-0 p-6 text-6xl opacity-5 group-hover:opacity-20 transition-all duration-500 transform group-hover:scale-110">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <div class="tilt-content flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="p-3 bg-quant-accent/10 rounded-lg text-quant-accent">
+                                <i class="fas fa-chart-line text-2xl"></i>
+                            </div>
+                            <div class="text-gray-400 group-hover:text-white group-hover:scale-110 transition-all bg-white/5 p-2 rounded-full border border-white/10 group-hover:border-quant-accent">
+                                <i class="fab fa-github text-2xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-quant-accent transition-colors">NIFTY 50 Implied Volatility Surface & Vol Arbitrage</h3>
+                        <p class="text-gray-400 mb-8 flex-grow leading-relaxed">
+                            Engineered a robust model for the implied volatility surface of NIFTY 50 index options utilizing the Black-Scholes framework. Systematically analyzed volatility smiles and term structures to pinpoint and exploit market pricing anomalies for volatility arbitrage strategies.
+                        </p>
+                        <div class="flex flex-wrap gap-3 font-mono text-sm text-quant-neon mt-auto">
+                            <span class="bg-quant-neon/10 px-3 py-1 rounded-full">Python</span>
+                            <span class="bg-quant-neon/10 px-3 py-1 rounded-full">Black-Scholes</span>
+                            <span class="bg-quant-neon/10 px-3 py-1 rounded-full">SciPy</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="https://github.com/Aarya-19" target="_blank" class="glow-border bg-quant-card p-8 rounded-xl reveal group relative overflow-hidden flex flex-col h-full tilt-card interactive-element block" style="transition-delay: 150ms;">
+                    <div class="absolute top-0 right-0 p-6 text-6xl opacity-5 group-hover:opacity-20 transition-all duration-500 transform group-hover:scale-110">
+                        <i class="fas fa-building-columns"></i>
+                    </div>
+                    <div class="tilt-content flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="p-3 bg-quant-neon/10 rounded-lg text-quant-neon">
+                                <i class="fas fa-file-invoice-dollar text-2xl"></i>
+                            </div>
+                            <div class="text-gray-400 group-hover:text-white group-hover:scale-110 transition-all bg-white/5 p-2 rounded-full border border-white/10 group-hover:border-quant-neon">
+                                <i class="fab fa-github text-2xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-quant-neon transition-colors">Derivatives' Impact on Firm Valuation</h3>
+                        <p class="text-gray-400 mb-8 flex-grow leading-relaxed">
+                            Conducted exhaustive empirical research assessing how the deployment of financial derivatives influences core corporate valuation metrics. Performed highly robust econometric analysis on large-scale corporate datasets to identify statistically significant correlations.
+                        </p>
+                        <div class="flex flex-wrap gap-3 font-mono text-sm text-quant-accent mt-auto">
+                            <span class="bg-quant-accent/10 px-3 py-1 rounded-full">Stata</span>
+                            <span class="bg-quant-accent/10 px-3 py-1 rounded-full">Python</span>
+                            <span class="bg-quant-accent/10 px-3 py-1 rounded-full">Econometrics</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 px-4 bg-black/40">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 font-mono reveal">
+                <span class="text-quant-accent">03.</span> Technical Toolkit
+            </h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 reveal">
+                <!-- Skill tags -->
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fab fa-python text-yellow-400 text-xl"></i> Python
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-code text-blue-500 text-xl"></i> C++
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fab fa-java text-red-500 text-xl"></i> Java
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-database text-purple-400 text-xl"></i> KDB/Q
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-server text-blue-300 text-xl"></i> SQL
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-brain text-orange-500 text-xl"></i> TensorFlow
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-chart-line text-green-500 text-xl"></i> Bloomberg Terminal
+                </div>
+                <div class="skill-tag border border-gray-700 bg-quant-card px-6 py-3 rounded-full font-mono flex items-center gap-3 interactive-element">
+                    <i class="fas fa-table text-cyan-400 text-xl"></i> Pandas/NumPy
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hobbies" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center font-mono reveal">
+                <span class="text-quant-accent">04.</span> Beyond the Terminal
+            </h2>
+            <p class="text-center text-gray-400 mb-12 reveal font-mono text-sm">Hover over cards for some fun.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+                
+                <!-- F1 Card -->
+                <div class="hobby-card bg-gradient-to-br from-quant-card to-black p-6 rounded-xl border border-gray-800 hover:border-orange-500 transition-colors group overflow-hidden interactive-element">
+                    <div class="text-4xl mb-4 text-orange-500 relative h-12">
+                        <span class="f1-car absolute left-0">🏎️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Formula 1</h3>
+                    <p class="text-sm text-gray-400">Cheering for <span class="text-orange-400 font-semibold">Oscar Piastri</span>. Analyzing telemetry and race pace data is my weekend routine.</p>
+                </div>
+
+                <!-- Pickleball Card -->
+                <div class="hobby-card bg-gradient-to-br from-quant-card to-black p-6 rounded-xl border border-gray-800 hover:border-green-400 transition-colors group text-center flex flex-col items-center interactive-element">
+                    <div class="mb-2 paddle text-gray-400 h-12 flex items-center justify-center w-full">
+                        <svg width="45" height="45" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="inline-block origin-bottom-right">
+                            <!-- Paddle Face -->
+                            <rect x="25" y="10" width="40" height="50" rx="15" fill="currentColor" />
+                            <!-- Handle -->
+                            <rect x="40" y="60" width="10" height="30" rx="3" fill="#4B5563" />
+                            <rect x="38" y="58" width="14" height="4" fill="#374151" />
+                            <rect x="38" y="86" width="14" height="6" rx="2" fill="#1f2937" />
+                            <!-- Pickleball Ball-->
+                            <circle cx="80" cy="25" r="15" fill="#10b981" />
+                            <circle cx="75" cy="20" r="2" fill="#0a0f18" />
+                            <circle cx="85" cy="20" r="2" fill="#0a0f18" />
+                            <circle cx="80" cy="28" r="2" fill="#0a0f18" />
+                            <circle cx="73" cy="27" r="2" fill="#0a0f18" />
+                            <circle cx="87" cy="27" r="2" fill="#0a0f18" />
+                            <circle cx="75" cy="34" r="2" fill="#0a0f18" />
+                            <circle cx="85" cy="34" r="2" fill="#0a0f18" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2 mt-2">Pickleball</h3>
+                    <div class="bg-yellow-500/20 text-yellow-400 text-xs px-3 py-1 rounded-full font-mono mb-3 border border-yellow-500/30 font-bold group-hover:scale-110 transition-transform">
+                        <i class="fas fa-medal mr-1"></i> MS Medals
+                    </div>
+                    <p class="text-sm text-gray-400">Won a Gold medal and a Bronze medal in Morgan Stanley tournaments.</p>
+                </div>
+
+                <!-- Poker Card -->
+                <div class="hobby-card bg-gradient-to-br from-quant-card to-black p-6 rounded-xl border border-gray-800 hover:border-red-500 transition-colors group relative overflow-hidden interactive-element">
+                    <div class="absolute -right-4 -bottom-4 text-7xl opacity-5 group-hover:opacity-20 group-hover:rotate-12 transition-all">
+                        🃏
+                    </div>
+                    <div class="text-4xl mb-4 text-red-500 flex gap-2 h-12 items-end">
+                        <span class="card-spade inline-block text-gray-300">♠️</span>
+                        <span class="card-heart inline-block">♥️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Poker</h3>
+                    <p class="text-sm text-gray-400">Calculating EV, pot odds, and optimizing decision-making under conditions of incomplete information.</p>
+                </div>
+
+                <!-- Chess Card -->
+                <div class="hobby-card bg-gradient-to-br from-quant-card to-black p-6 rounded-xl border border-gray-800 hover:border-cyan-400 transition-colors group interactive-element">
+                    <div class="text-4xl mb-4 text-white h-12 flex items-end">
+                        <i class="fas fa-chess-knight chess-piece block"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Chess</h3>
+                    <p class="text-sm text-gray-400">Pattern recognition, game theory, and strategic forecasting multiple steps ahead of the curve.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 py-10 bg-quant-dark mt-20 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-gray-500 text-sm font-mono">
+                © <script>document.write(new Date().getFullYear())</script> Aarya Aamish Bhatt. Execute Strategy.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://github.com/Aarya-19" target="_blank" class="w-12 h-12 rounded-full bg-quant-card flex items-center justify-center text-gray-400 hover:text-quant-neon hover:scale-110 hover:shadow-[0_0_15px_#10b981] transition-all interactive-element">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/aaryaaamishbhatt" target="_blank" class="w-12 h-12 rounded-full bg-quant-card flex items-center justify-center text-gray-400 hover:text-quant-accent hover:scale-110 hover:shadow-[0_0_15px_#06b6d4] transition-all interactive-element">
+                    <i class="fab fa-linkedin-in text-xl"></i>
+                </a>
+                <a href="mailto:example@example.com" class="w-12 h-12 rounded-full bg-quant-card flex items-center justify-center text-gray-400 hover:text-white hover:scale-110 hover:shadow-[0_0_15px_#ffffff] transition-all interactive-element">
+                    <i class="fas fa-envelope text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS for Interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Typing Effect Logic ---
+            const phrases = [
+                "Aspiring Quantitative Researcher.",
+                "Aspiring Quantitative Trader.",
+                "Financial Engineer."
+            ];
+            
+            let currentPhraseIndex = 0;
+            let currentCharIndex = 0;
+            let isDeleting = false;
+            const typedTextElement = document.getElementById('typed-text');
+
+            function typeEffect() {
+                const currentPhrase = phrases[currentPhraseIndex];
+                
+                if (isDeleting) {
+                    typedTextElement.textContent = currentPhrase.substring(0, currentCharIndex - 1);
+                    currentCharIndex--;
+                } else {
+                    typedTextElement.textContent = currentPhrase.substring(0, currentCharIndex + 1);
+                    currentCharIndex++;
+                }
+
+                let speed = isDeleting ? 30 : 70;
+
+                if (!isDeleting && currentCharIndex === currentPhrase.length) {
+                    speed = 2000; // Pause at end of sentence
+                    isDeleting = true;
+                } else if (isDeleting && currentCharIndex === 0) {
+                    isDeleting = false;
+                    currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                    speed = 500; // Pause before typing next
+                }
+
+                setTimeout(typeEffect, speed);
+            }
+            setTimeout(typeEffect, 1000);
+
+            // --- 3D Tilt Effect Logic ---
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x position within the element.
+                    const y = e.clientY - rect.top;  // y position within the element.
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -12; // Max rotation deg
+                    const rotateY = ((x - centerX) / centerX) * 12;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+
+            // --- Scroll Reveal Animation ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            // --- Canvas Particle Network Logic ---
+            const canvas = document.getElementById('network-canvas');
+            const ctx = canvas.getContext('2d');
+            let particlesArray;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let mouse = {
+                x: null,
+                y: null,
+                radius: 150
+            }
+
+            window.addEventListener('mousemove', function(event) {
+                mouse.x = event.x;
+                mouse.y = event.y;
+            });
+            
+            window.addEventListener('mouseout', function() {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                    if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+
+                    // Mouse interaction
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                            this.x += 2;
+                        }
+                        if (mouse.x > this.x && this.x > this.size * 10) {
+                            this.x -= 2;
+                        }
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                            this.y += 2;
+                        }
+                        if (mouse.y > this.y && this.y > this.size * 10) {
+                            this.y -= 2;
+                        }
+                    }
+
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+
+            function init() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 15000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * 2) - 1;
+                    let directionY = (Math.random() * 2) - 1;
+                    let color = '#06b6d4'; // Cyan color
+                    
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function connect() {
+                let opacityValue = 1;
+                for (let a = 0; a < particlesArray.length; a++) {
+                    for (let b = a; b < particlesArray.length; b++) {
+                        let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                       ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                        if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                            opacityValue = 1 - (distance / 20000);
+                            ctx.strokeStyle = 'rgba(6, 182, 212,' + opacityValue + ')';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+                connect();
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = innerWidth;
+                canvas.height = innerHeight;
+                init();
+            });
+
+            init();
+            animate();
+        });
+    </script>
+</body>
+</html>
